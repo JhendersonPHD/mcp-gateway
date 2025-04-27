@@ -1,17 +1,17 @@
 services:
-  - type: web              # MCP gateway
+  - type: web            # MCP gateway, only Supabase for now
     name: mcp-gateway
-    runtime: node          # ← required for a Node.js service
+    runtime: node
     plan: starter
-    envVars:               # ← (not “env:”)
+    envVars:
       - key: SUPABASE_SSE_URL
-        fromSecret: SUPABASE_SSE_URL
+        sync: false            # ← prompt you for this secret in the Dashboard
     buildCommand: npm install
     startCommand: npm start
 
-  - type: worker           # AI agent fleet
+  - type: worker         # your agent fleet
     name: ai-agent-worker
-    runtime: node          # ← required here too
+    runtime: node
     plan: starter
     envVars:
       - key: GATEWAY_URL
