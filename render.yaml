@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: mcp-gateway
+    env:
+      - key: SUPABASE_SSE_URL
+        fromSecret: SUPABASE_SSE_URL
+      - key: PINECONE_SSE_URL
+        fromSecret: PINECONE_SSE_URL
+      - key: REDIS_SSE_URL
+        fromSecret: REDIS_SSE_URL
+      # …all 30 SSE URLs…
+    buildCommand: npm install
+    startCommand: npm start
+
+  - type: worker
+    name: ai-agent-worker
+    env:
+      - key: GATEWAY_URL
+        value: https://mcp-gateway.onrender.com/streams
+    numInstances: 25
+    autoDeploy: true
