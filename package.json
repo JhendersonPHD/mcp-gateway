@@ -9,6 +9,6 @@
   "author": "jhendersonphd",
   "license": "MIT",
   "dependencies": {
-    "supergateway": "latest"
+    "supergateway": "^2.7.0"
   }
 }
