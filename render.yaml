@@ -1,6 +1,7 @@
 services:
-  - type: web
+  - type: web            # your MCP gateway
     name: mcp-gateway
+    plan: starter        # web services on free can use 'free', but workers require at least 'starter'
     env:
       - key: SUPABASE_SSE_URL
         fromSecret: SUPABASE_SSE_URL
@@ -8,14 +9,18 @@ services:
         fromSecret: PINECONE_SSE_URL
       - key: REDIS_SSE_URL
         fromSecret: REDIS_SSE_URL
-      # …all 30 SSE URLs…
+      # repeat the above two lines for each of your other SSE URLs—
+      # do NOT include literal “…” characters or non-ASCII ellipses
     buildCommand: npm install
     startCommand: npm start
 
-  - type: worker
+  - type: worker         # your agent processes
     name: ai-agent-worker
+    plan: starter        # workers need at least the Starter plan
     env:
       - key: GATEWAY_URL
         value: https://mcp-gateway.onrender.com/streams
+    buildCommand: npm install
+    startCommand: npm start
     numInstances: 25
     autoDeploy: true
