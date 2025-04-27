@@ -1,22 +1,16 @@
 services:
-  - type: web            # your MCP gateway
+  - type: web            # MCP gateway, only Supabase for now
     name: mcp-gateway
-    plan: starter        # web services on free can use 'free', but workers require at least 'starter'
+    plan: starter
     env:
-      - key: SUPABASE_SSE_URL
-        fromSecret: SUPABASE_SSE_URL
-      - key: PINECONE_SSE_URL
-        fromSecret: PINECONE_SSE_URL
-      - key: REDIS_SSE_URL
-        fromSecret: REDIS_SSE_URL
-      # repeat the above two lines for each of your other SSE URLs—
-      # do NOT include literal “…” characters or non-ASCII ellipses
+      - key: SUPABASE_SSE_URL      # the ENV VAR your code reads
+        fromSecret: SUPABASE_SSE_URL  # the name of the secret in Render
     buildCommand: npm install
     startCommand: npm start
 
-  - type: worker         # your agent processes
+  - type: worker         # your agent fleet
     name: ai-agent-worker
-    plan: starter        # workers need at least the Starter plan
+    plan: starter
     env:
       - key: GATEWAY_URL
         value: https://mcp-gateway.onrender.com/streams
